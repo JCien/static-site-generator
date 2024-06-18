@@ -10,15 +10,19 @@ class TestHTMLNode(unittest.TestCase):
     
     def test_props(self):
         node = HTMLNode("a", "value the text inside a paragraph", None, {"href": "https://www.google.com", "target": "_blank"})
-        node.props_to_html()
+        self.assertEqual(node.props_to_html(), ' href="https://www.google.com" target="_blank"')
 
     def test_LeafNode(self):
         node = LeafNode("a", "Hello World!", {"href": "https://www.boot.dev", "target": "_blank"})
-        print(node.to_html())
+        repr(node.to_html())
 
     def test_LeafNode2(self):
-        node = LeafNode("p", "Hello World!", None)
-        print(node.to_html())
+        node = LeafNode("p", "Hello World!")
+        self.assertEqual(node.to_html(), "<p>Hello World!</p>")
+
+    def test_LeafNode_NoTag(self):
+        node = LeafNode(None, "Testing no tag")
+        self.assertEqual(node.to_html(), "Testing no tag")
     
     def test_LeafNode_NoValue(self):
         node = LeafNode("a", None, {"href": "https://www.boot.dev", "target": "_blank"})

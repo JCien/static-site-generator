@@ -1,9 +1,10 @@
 import unittest
 
-from htmlnode import HTMLNode
-from htmlnode import LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 class TestHTMLNode(unittest.TestCase):
+    # Tests for HTMLNode
+    
     def test_node(self):
         node = HTMLNode("a", "value the text inside a paragraph", None, {"href": "https://www.google.com", "target": "_blank"})
         repr(node)
@@ -11,6 +12,8 @@ class TestHTMLNode(unittest.TestCase):
     def test_props(self):
         node = HTMLNode("a", "value the text inside a paragraph", None, {"href": "https://www.google.com", "target": "_blank"})
         self.assertEqual(node.props_to_html(), ' href="https://www.google.com" target="_blank"')
+
+    # Tests for LeafNode
 
     def test_LeafNode(self):
         node = LeafNode("a", "Hello World!", {"href": "https://www.boot.dev", "target": "_blank"})
@@ -27,6 +30,26 @@ class TestHTMLNode(unittest.TestCase):
     def test_LeafNode_NoValue(self):
         node = LeafNode("a", None, {"href": "https://www.boot.dev", "target": "_blank"})
         self.assertRaises(ValueError, node.to_html)
+
+    # Tests for ParentNode
+
+    def test_ParentNode(self):
+        node = ParentNode("p", [
+            LeafNode("b", "Bold text"),
+            LeafNode(None, "Normal text"),
+            LeafNode("i", "italic text"),
+            LeafNode(None, "Normal text"),
+        ],)
+        self.assertEqual(repr(node), 'ParentNode(p, [LeafNode(b, Bold text, None), LeafNode(None, Normal text, None), LeafNode(i, italic text, None), LeafNode(None, Normal text, None)], None)')
+
+    def test_ParentNode_toHTML(self):
+        node = ParentNode("a", [
+            LeafNode("b", "Bold text"),
+            LeafNode(None, "Normal text"),
+            LeafNode("i", "italic text"),
+            LeafNode(None, "Normal text"),
+        ], {"href": "www.google.com"})
+        self.assertEqual(node.to_html(), '<a href="www.google.com"><b>Bold text</b>Normal text<i>italic text</i>Normal text</a>')
 
 if __name__ == "__main__":
     unittest.main()

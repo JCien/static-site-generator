@@ -35,9 +35,3 @@ def text_node_to_html_node(text_node):
     else:
         raise ValueError(f"Invalid text type: {text_node.text_type}")
     
-def split_nodes_delimiter(old_nodes, delimiter, text_type):
-    split_nodes = []
-    for nodes in old_nodes:
-        if nodes.text_type != text_type_text:
-            split_nodes.append(nodes)
-        el
